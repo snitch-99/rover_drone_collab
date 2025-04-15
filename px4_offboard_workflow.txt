@@ -1,0 +1,53 @@
+
+Step 1:
+Launch PX4 with the X500 drone in Gazebo
+Commands:
+cd ~/PX4-Autopilot
+make px4_sitl gazebo_x500
+
+Step 2:
+Open QGroundControl and connect to PX4
+
+Step 3:
+Start MAVROS2 in a new terminal
+Commands:
+source /opt/ros/humble/setup.bash
+ros2 launch mavros px4.launch fcu_url:=udp://:14540@127.0.0.1:14557
+
+Step 4:
+Confirm MAVROS is connected
+Commands:
+ros2 topic echo /mavros/state
+# Look for: connected: true
+
+Step 5:
+Run the OFFBOARD setpoint script
+Commands:
+source /opt/ros/humble/setup.bash
+cd ~/offboard_test
+python3 offboard_node.py
+
+Step 6:
+Switch mode to OFFBOARD using QGroundControl
+
+Step 7:
+Arm the drone from ROS2 terminal
+Commands:
+ros2 service call /mavros/cmd/arming mavros_msgs/srv/CommandBool "{value: true}"
+
+Step 8:
+Check drone state
+Commands:
+ros2 topic echo /mavros/state
+# Look for: armed: true, mode: OFFBOARD
+
+Step 9 (Optional):
+Disarm the drone
+Commands:
+ros2 service call /mavros/cmd/arming mavros_msgs/srv/CommandBool "{value: false}"
+
+Step 10 (Optional):
+If arming fails, disable pre-arm checks in PX4 terminal
+Commands:
+param set COM_RCL_EXCEPT 4
+param set COM_ARM_WO_GPS 1
