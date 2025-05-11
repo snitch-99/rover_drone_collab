@@ -1,0 +1,6 @@
+[console_scripts]
+arm_node = rover_drone_colab.arm_node:main
+arm_rover = rover_drone_colab.arm_rover:main
+drone_controller_node = rover_drone_colab.drone_controller_node:main
+rover_controller_node = rover_drone_colab.rover_controller_node:main
+
